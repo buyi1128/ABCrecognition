@@ -11,12 +11,12 @@ from nets.NewNet import NewNet
 
 testpath = "dataset/test_data"
 testdata = characterLoader(testpath)
-modelfile = "model/NewNet_minLoss_model.pkl"
+modelfile = "model/NewNet_epoch_49_model.pkl"
 net = NewNet()
 net.load_state_dict(torch.load(modelfile))
 total = 0
 right = 0
-wrongDir = "./wrong"
+wrongDir = "./wrong1"
 if not os.path.exists(wrongDir):
     os.makedirs(wrongDir)
 for step, (path, input, label) in enumerate(testdata):

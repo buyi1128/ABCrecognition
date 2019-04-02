@@ -48,6 +48,9 @@ class characterLoader(Data.Dataset):
         img = torch.tensor(np.array(self.data[index], dtype=np.float32))
         img = torch.unsqueeze(img, 0)
         label = torch.tensor(np.array(self.labels[index]))
+        # print("label: ", label)
+        # one_hot = torch.zeros(4, dtype=torch.long).scatter_(0, index=label, value=1)
+        # print("one_hot ", one_hot)
         return self.imgpaths[index], img, label
 
 # trainpath = "dataset/train_data"
@@ -57,5 +60,5 @@ class characterLoader(Data.Dataset):
 #     batch_size=6,      # mini batch size
 #     shuffle=False,               # 要不要打乱数据 (打乱比较好)
 # )
-# for x, y in data_loader:
+# for path, x, y in data_loader:
 #     print(x.size(), y)

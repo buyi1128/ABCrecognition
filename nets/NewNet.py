@@ -50,7 +50,7 @@ class NewNet(nn.Module):
             nn.ReLU()
         )
         self.fc2 = nn.Linear(128, 4)
-        # self.softmax = nn.Softmax(dim=-1)
+        self.softmax = nn.Softmax(dim=-1)
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels

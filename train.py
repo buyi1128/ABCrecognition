@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import torch.utils.data as Data
 import torch.optim as optim
+import matplotlib.pyplot as plt
 
 from characterLoader import characterLoader
 from nets.NewNet import NewNet
@@ -10,7 +11,7 @@ from nets.NewNet import NewNet
 
 bs = 8
 lr = 0.0001
-epoch = 50
+epoch = 80
 stepLength = 20
 
 trainpath = "dataset/train_data"
@@ -31,8 +32,9 @@ val_loader = Data.DataLoader(
 )
 
 net = NewNet()
-optimizer = optim.SGD(net.parameters(), lr=lr)  # optimize all cnn parameters
+optimizer = optim.Adam(net.parameters(), lr=lr)  # optimize all cnn parameters
 criterion = torch.nn.CrossEntropyLoss()
+# criterion = torch.nn.functional.nll_loss()
 
 def train(e, data_loader):
     sum_loss = 0
@@ -47,6 +49,7 @@ def train(e, data_loader):
         sum_loss += loss.item()
     print('train epoch %d loss:%.03f'
           % (e, sum_loss))
+    return sum_loss
 
 def validate(val_loader):
     sum_loss = 0
@@ -61,14 +64,25 @@ def validate(val_loader):
 
 if __name__ == "__main__":
     val_loss = np.inf
+    trainloss = []
+    valloss = []
     for e in range(epoch):
-        train(e, data_loader)
+        train_loss = train(e, data_loader)
+        trainloss.append(train_loss)
         if e % 5 == 0:
             loss = validate(val_loader)
+            valloss.append(loss)
             if loss < val_loss:
                 val_loss = loss
                 torch.save(net.state_dict(), "model/NewNet_minLoss_model.pkl")
         if e == epoch - 1:
-            torch.save(net.state_dict(), "./NewNet_epoch_{}_model.pkl".format(e))
-
+            torch.save(net.state_dict(), "model/NewNet_epoch_{}_model.pkl".format(e))
+    plt.figure(0)
+    x = [i for i in range(len(trainloss))]
+    plt.plot(x, trainloss)
+    plt.savefig("train_loss.jpg")
+    plt.close(0)
+    x = [i for i in range(len(valloss))]
+    plt.plot(x, valloss)
+    plt.savefig("val_loss.jpg")
 
