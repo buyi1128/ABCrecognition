@@ -8,12 +8,7 @@ import matplotlib.pyplot as plt
 from characterLoader import characterLoader
 from nets.NewNet import NewNet
 
-
 bs = 8
-lr = 0.0001
-epoch = 80
-stepLength = 20
-
 trainpath = "dataset/train_data"
 valpath = "dataset/val_data"
 
@@ -31,10 +26,6 @@ val_loader = Data.DataLoader(
     num_workers=2
 )
 
-net = NewNet()
-optimizer = optim.Adam(net.parameters(), lr=lr)  # optimize all cnn parameters
-criterion = torch.nn.CrossEntropyLoss()
-# criterion = torch.nn.functional.nll_loss()
 
 def train(e, data_loader):
     sum_loss = 0
@@ -63,6 +54,13 @@ def validate(val_loader):
 
 
 if __name__ == "__main__":
+    lr = 0.0001
+    epoch = 80
+    net = NewNet()
+    # optimizer = optim.Adam(net.parameters(), lr=lr, betas=(0.9, 0.99)) # optimize all cnn parameters
+    optimizer = optim.SGD(net.parameters(), lr=lr, momentum=0.9)
+    criterion = torch.nn.CrossEntropyLoss()
+    # criterion = torch.nn.functional.nll_loss()
     val_loss = np.inf
     trainloss = []
     valloss = []
@@ -77,6 +75,8 @@ if __name__ == "__main__":
                 torch.save(net.state_dict(), "model/NewNet_minLoss_model.pkl")
         if e == epoch - 1:
             torch.save(net.state_dict(), "model/NewNet_epoch_{}_model.pkl".format(e))
+        # reduce learning rate
+        lr = lr * (0.1 ** (epoch // 20))
     plt.figure(0)
     x = [i for i in range(len(trainloss))]
     plt.plot(x, trainloss)
