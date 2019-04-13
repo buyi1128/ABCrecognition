@@ -11,7 +11,7 @@ from nets.NewNet import NewNet
 
 testpath = "dataset/test_data"
 testdata = characterLoader(testpath)
-modelfile = "model/NewNet_epoch_49_model.pkl"
+modelfile = "model/NewNet_epoch_79_model.pkl"
 net = NewNet()
 net.load_state_dict(torch.load(modelfile))
 total = 0
