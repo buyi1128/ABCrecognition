@@ -74,9 +74,9 @@ if __name__ == "__main__":
             valloss.append(loss)
             if loss < val_loss:
                 val_loss = loss
-                torch.save(net.state_dict(), "model/NewNet_minLoss_model.pkl")
+                torch.save(net.state_dict(), "model/negative_minLoss_model.pkl")
         if e == epoch - 1:
-            torch.save(net.state_dict(), "model/NewNet_epoch_{}_model.pkl".format(e))
+            torch.save(net.state_dict(), "model/negative_epoch_{}_model.pkl".format(e))
     plt.figure(0)
     x = [i for i in range(len(trainloss))]
     plt.plot(x, trainloss)
