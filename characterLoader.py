@@ -25,6 +25,7 @@ class characterLoader(Data.Dataset):
                 continue
 
             imgfile = os.path.join(imgdir, name)
+            # print(imgfile)
             img = cv2.imread(imgfile)
             # img = cv2.resize(img, (28, 28), interpolation=cv2.INTER_CUBIC)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -33,12 +34,12 @@ class characterLoader(Data.Dataset):
             datalist.append(img)
             imgpaths.append(imgfile)
             y = int(ord(name[0]) - ord("A"))
-            y = y - 1 if y == 4 else y
             labels.append(y)
         if param.isDebug:
             datalist = datalist[:20]
             labels = labels[:20]
         print(imgdir, " images: ", len(datalist))
+        # print(labels)
         return datalist, labels, imgpaths
 
     def __len__(self):

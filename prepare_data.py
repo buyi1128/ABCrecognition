@@ -1,16 +1,10 @@
 import os
 import shutil
 
-dirpath = "/Users/yuanyuan/Documents/GitHub/newdata_"
-resultpath = "/Users/yuanyuan/Documents/GitHub/ABCrecognition/dataset/test_data"
+dirpath = "dataset/val_data"
 
-for sub in os.listdir(dirpath): # sub is A, B, C, D, E
-    if sub.startswith(".DS"):
+for file in os.listdir(dirpath): # sub is A, B, C, D, E
+    if file.startswith(".DS"):
         continue
-    subpath = os.path.join(dirpath, sub)
-    # count = 1
-    for file in os.listdir(subpath):
-        if sub.startswith(".DS"):
-            continue
-        shutil.copyfile(os.path.join(subpath, file), os.path.join(resultpath, file))
-        # count += 1
+    if file[0] == 'N':
+        os.rename(os.path.join(dirpath, file), os.path.join(dirpath, 'E' + file[1::]))

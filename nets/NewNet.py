@@ -49,8 +49,8 @@ class NewNet(nn.Module):
             # nn.Dropout(0.5),
             nn.ReLU()
         )
-        self.fc2 = nn.Linear(128, 4)
-        self.softmax = nn.Softmax(dim=-1)
+        self.fc2 = nn.Linear(128, 5)
+        self.softmax = nn.LogSoftmax(dim=-1)
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
@@ -100,7 +100,7 @@ class LeNet(nn.Module):
             nn.Linear(120, 84),
             nn.ReLU()
         )
-        self.fc3 = nn.Linear(84, 4)
+        self.fc3 = nn.Linear(84, 5)
         self.softmax = nn.LogSoftmax(dim=1)
 
     # 定义前向传播过程，输入为x

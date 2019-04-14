@@ -11,7 +11,7 @@ from nets.NewNet import NewNet
 
 bs = 8
 lr = 0.0001
-epoch = 80
+epoch = 50
 stepLength = 20
 
 trainpath = "dataset/train_data"
@@ -34,6 +34,7 @@ val_loader = Data.DataLoader(
 net = NewNet()
 optimizer = optim.Adam(net.parameters(), lr=lr)  # optimize all cnn parameters
 criterion = torch.nn.CrossEntropyLoss()
+# criterion = torch.nn.NLLLoss()
 # criterion = torch.nn.functional.nll_loss()
 
 def train(e, data_loader):
@@ -41,8 +42,8 @@ def train(e, data_loader):
     for step, (path, input, label) in enumerate(data_loader):
         optimizer.zero_grad()
         outputs = net.forward(input)
-        # print("outputs ", outputs)
-        # print("label ", label)
+        # print("outputs ", outputs.size())
+        # print("label ", label.size())
         loss = criterion(outputs, label)
         loss.backward()
         optimizer.step()
@@ -74,9 +75,9 @@ if __name__ == "__main__":
             valloss.append(loss)
             if loss < val_loss:
                 val_loss = loss
-                torch.save(net.state_dict(), "model/NewNet_minLoss_model.pkl")
+                torch.save(net.state_dict(), "model/negative_minLoss_model.pkl")
         if e == epoch - 1:
-            torch.save(net.state_dict(), "model/NewNet_epoch_{}_model.pkl".format(e))
+            torch.save(net.state_dict(), "model/negative_epoch_{}_model.pkl".format(e))
     plt.figure(0)
     x = [i for i in range(len(trainloss))]
     plt.plot(x, trainloss)
